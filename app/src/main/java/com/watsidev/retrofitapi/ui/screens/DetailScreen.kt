@@ -9,7 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import coil.compose.AsyncImage
 import com.watsidev.retrofitapi.network.pokemonModel.PokemonResponse
+import com.watsidev.retrofitapi.ui.common.LottieLoadAnimation
 
 @Composable
 fun DetailScreen(
@@ -29,9 +31,17 @@ fun DetailScreen(
 
     ) {
         Text("Detalle del pokemon: $idPokemon")
-        Text(pokemon?.name ?: "No encontrado")
-        Text("Altura: ${pokemon?.height ?: "No disponible"}")
-        Text("Peso: ${pokemon?.weight ?: "No disponible"}")
+        if (pokemon == null) {
+            LottieLoadAnimation()
+        } else {
+            AsyncImage(
+                model = pokemon.sprites.other.home.front_default,
+                contentDescription = pokemon.name
+            )
+            Text(pokemon.name)
+            Text("Altura: ${pokemon.height}")
+            Text("Peso: ${pokemon.weight}")
+        }
         Text("Regresar", modifier.clickable { onBackClick() })
     }
 }

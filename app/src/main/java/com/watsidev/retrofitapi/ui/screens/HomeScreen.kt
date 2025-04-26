@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -32,6 +33,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.watsidev.retrofitapi.network.pokemonModel.PokemonResponse
@@ -43,6 +46,7 @@ fun HomeScreen(
     inputValue: String,
     onChangeValue: (String) -> Unit,
     onSearchPokemon: (String) -> Unit,
+    onDetailNavigate: (String) -> Unit,
     onNavigateClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
@@ -54,7 +58,11 @@ fun HomeScreen(
             onValueChange = { onChangeValue(it) },
             trailingIcon = {
                 IconButton(
-                    onClick = { onSearchPokemon(inputValue) }
+                    onClick = {
+                        if (inputValue.isNotEmpty()) {
+                            onSearchPokemon(inputValue)
+                        }
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -62,7 +70,10 @@ fun HomeScreen(
                     )
                 }
             },
-            label = { Text("Search Pokémon") },
+            label = {
+                    Text("Search Pokémon")
+            },
+            maxLines = 1,
             singleLine = true,
             modifier = Modifier
                 .padding(top = 52.dp)
@@ -74,8 +85,10 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(pokemon!!.name)
-                Text(pokemon.id.toString())
+                PokemonCard(
+                    pokemon = pokemon,
+                    onDetailNavigate = { onDetailNavigate(pokemon?.id.toString()) }
+                )
             }
         }
         LazyVerticalGrid(
@@ -85,7 +98,7 @@ fun HomeScreen(
                 .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .background(Color(0xFFF2F2F2)),
+                .background(MaterialTheme.colorScheme.primaryContainer),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),

@@ -61,6 +61,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     //Add Navigation Compose
     implementation(libs.androidx.navigation.compose)
+    //Add lottie Compose
+    implementation(libs.lottie.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

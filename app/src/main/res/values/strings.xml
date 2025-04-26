@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RetrofitApi</string>
+    <string name="national">National</string>
+    <string name="kanto">Kanto</string>
 </resources>

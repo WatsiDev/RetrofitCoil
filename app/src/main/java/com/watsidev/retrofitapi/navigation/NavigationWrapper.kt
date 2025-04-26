@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -45,8 +46,9 @@ fun navigationWrapper() {
                     onChangeValue = {viewModel.onChangeValue(it)},
                     onSearchPokemon = { viewModel.searchPokemonByIdOrName(it) },
                     onNavigateClick = { navController.navigate(Regions) },
+                    onDetailNavigate = { id -> navController.navigate(Detail(id = id)) },
                     modifier = Modifier
-                        .background(Color(0xFF2F4F4F))
+                        .background(MaterialTheme.colorScheme.background)
                         .padding(contentPadding)
                 )
             }
@@ -61,6 +63,7 @@ fun navigationWrapper() {
             composable<Pokedex> {
                 val pokedex = it.toRoute<Pokedex>()
                 PokedexScreen(
+                    isLoading = uiState.value.isLoading,
                     listPokemon = uiState.value.pokemonList,
                     name = pokedex.name,
                     onDetailNavigate = { id -> navController.navigate(Detail(id = id)) },
